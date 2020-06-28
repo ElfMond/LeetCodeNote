@@ -233,3 +233,122 @@ class Solution:
                 i = i - 1
                 last = last - 1
 ~~~
+
+# [6] 141. Linked List Cycle
+
+
+[leetcode Nr.141](https://leetcode.com/problems/linked-list-cycle/) (easy)
+
+Given a linked list, determine if it has a cycle in it.
+
+To represent a cycle in the given linked list, we use an integer pos which represents the position (0-indexed) in the linked list where tail connects to. If pos is -1, then there is no cycle in the linked list.
+
+**Example**
+<pre>
+<b>Input:</b> head = [3,2,0,-4], pos = 1
+<b>Output:</b> true
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+</pre>
+
+**My Solution**
+~~~python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        if head == None:
+            return False
+        l1 = head
+        l2 = head.next
+        while l1 != None and l2 != None and l2.next != None:
+            if l1 == l2:
+                return True
+            else:
+                l1 = l1.next
+                l2 = l2.next.next
+        return False
+~~~
+
+# [7] 524. Longest Word in Dictionary through Deleting
+
+[leetcode Nr.524](https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/) (Medium)
+
+Given a string and a string dictionary, find the longest string in the dictionary that can be formed by deleting some characters of the given string. If there are more than one possible results, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
+
+**Example 1**
+<pre>
+<b>Input:</b> s = "abpcplea", d = ["ale","apple","monkey","plea"]
+<b>Output:</b> "apple"
+</pre>
+**Example 2**
+<pre>
+<b>Input:</b> s = "abpcplea", d = ["a","b","c"]
+<b>Output:</b> "a"
+</pre>
+
+**Note:**
+1. All the strings in the input will only contain lower-case letters.
+2. The size of the dictionary won't exceed 1,000.
+3. The length of all the strings in the input won't exceed 1,000.
+
+
+**My Solution**
+~~~python
+class Solution:
+    def findLongestWord(self, s: str, d: List[str]) -> str:
+        res = ''
+        for di in d:
+            i = 0 
+            j = 0
+            while i <= len(s) :
+                if j == len(di):
+                    if len(di) < len(res):
+                        break
+                    elif len(di) == len(res):
+                        if di < res:
+                            res = di
+                    else:
+                        res = di
+                    break
+                if i ==len(s):
+                    break
+                if s[i] == di[j]:
+                    i = i + 1
+                    j = j + 1
+                else:
+                    i = i + 1
+        return res
+~~~
+
+
+**Better Solution**
+~~~python
+class Solution:
+    def findLongestWord(self, s: str, d: List[str]) -> str:
+        waiting = {}
+        for c in 'abcdefghijklmnopqrstuvwxyz':
+            waiting[c] = []
+            
+        for word in d:
+            # add pointor to beginning of each word
+            waiting[word[0]].append((word, 0))
+        
+        max_len = (0, "")
+        for c in s:
+            words = waiting[c]
+            waiting[c] = [] # clean waiting words for that character
+            for word, idx in words:
+                if idx+1 >= len(word):
+                    # finished word
+                    # use min and negative length to get maximum length then min word
+                    max_len = min(max_len, (-len(word), word)) 
+                else:
+                    # move pointer to next word
+                    next_c = word[idx+1]
+                    waiting[next_c].append((word, idx+1))
+        return max_len[1]
+~~~
