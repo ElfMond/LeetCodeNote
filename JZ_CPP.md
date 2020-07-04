@@ -141,3 +141,169 @@ public:
 };
 ~~~
 
+# 05. 替换空格
+
+**题目描述**
+
+请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+
+**示例：**
+~~~
+输入：s = "We are happy."
+输出："We%20are%20happy."
+~~~
+
+**限制：**
+~~~
+0 <= s 的长度 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    string replaceSpace(string s) {
+        string res;
+        for (int i = 0;i < s.size(); i++)
+        {
+            if(s[i] == ' ')
+                res += "%20";
+            else
+                res += s[i];
+        }
+        return res;
+    }
+};
+~~~
+
+# 06. 从尾到头打印链表
+
+**题目描述**
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+**示例：**
+~~~
+输入：head = [1,3,2]
+输出：[2,3,1]
+~~~
+
+**限制：**
+~~~
+0 <= 链表长度 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> reversePrint(ListNode* head) {
+        vector<int> res;
+        if(head != NULL)
+        {
+            res.push_back((*head).val);
+            head = (*head).next;
+        }
+        while (head != NULL)
+        {
+            res.insert(res.begin(),(*head).val);
+            head = (*head).next;
+        }
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> reversePrint(ListNode* head) {
+        vector<int> res;
+        while (head != NULL)
+        {
+            res.push_back(head->val);
+            head = head->next;
+        }
+
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
+~~~
+
+# 07. 重建二叉树
+
+**题目描述**
+
+输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+**示例：**
+
+例如，给出
+~~~
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+~~~
+返回如下的二叉树：
+~~~
+    3
+   / \
+  9  20
+    /  \
+   15   7
+~~~
+
+**限制：**
+~~~
+0 <= 节点个数 <= 5000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return recu(preorder.begin(),preorder.end(),inorder.begin(),inorder.end());
+    }
+    TreeNode* recu(vector<int>::iterator headPre, vector<int>::iterator rearPre, vector<int>::iterator headIn ,vector<int>::iterator rearIn)
+    {
+        if (headPre== rearPre)  return NULL;
+        TreeNode* cur = new TreeNode(*headPre);
+        auto root = find(headIn,rearIn,*headPre);
+        cur->left = recu(headPre+1,headPre + 1 + (root -headIn),headIn,root);
+        cur->right = recu(headPre + 1 + (root -headIn),rearPre,root+1,rearIn);
+        return cur;
+    }
+};
+~~~
+~~~
+前序遍历的首个元素即为根节点 root 的值；
+在中序遍历中搜索根节点 root 的索引 ，可将中序遍历划分为 [ 左子树 | 根节点 | 右子树 ] 。
+根据中序遍历中的左（右）子树的节点数量，可将前序遍历划分为 [ 根节点 | 左子树 | 右子树 ] 。
+~~~
