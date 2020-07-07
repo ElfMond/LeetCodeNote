@@ -1,18 +1,21 @@
 <a name="index">**Index**</a>
 
-<a href="#0">03. 数组中重复的数字</a>  
-<a href="#1">04. 二维数组中的查找</a>  
-<a href="#2">05. 替换空格</a>  
-<a href="#3">06. 从尾到头打印链表</a>  
-<a href="#4">07. 重建二叉树</a>  
-<a href="#5">09. 用两个栈实现队列</a>  
-<a href="#6">10-I. 用两个栈实现队列</a>  
-<a href="#7">10-II. 青蛙跳台阶问题</a>  
-<a href="#8">11. 旋转数组的最小数字</a>  
-<a href="#9">12. 矩阵中的路径</a>  
-<a href="#10">30. 包含min函数的栈</a>  
-<a href="#11">59.II. 队列的最大值</a>  
-# <a name="0">03. 数组中重复的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+<a href="#03">03. 数组中重复的数字</a>  
+<a href="#04">04. 二维数组中的查找</a>  
+<a href="#05">05. 替换空格</a>  
+<a href="#06">06. 从尾到头打印链表</a>  
+<a href="#07">07. 重建二叉树</a>  
+<a href="#09">09. 用两个栈实现队列</a>  
+<a href="#10-I">10-I. 用两个栈实现队列</a>  
+<a href="#10-II">10-II. 青蛙跳台阶问题</a>  
+<a href="#11">11. 旋转数组的最小数字</a>  
+<a href="#12">12. 矩阵中的路径</a>  
+<a href="#16">16. 数值的整数次方</a> 
+<a href="#30">30. 包含min函数的栈</a>  
+<a href="#59">59.II. 队列的最大值</a>  
+
+
+# <a name="03">03. 数组中重复的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -68,7 +71,7 @@ public:
 };
 ~~~
 
-# <a name="1">04. 二维数组中的查找</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="04">04. 二维数组中的查找</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -155,7 +158,7 @@ public:
 };
 ~~~
 
-# <a name="2">05. 替换空格</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="05">05. 替换空格</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -190,7 +193,7 @@ public:
 };
 ~~~
 
-# <a name="3">06. 从尾到头打印链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="06">06. 从尾到头打印链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -262,7 +265,7 @@ public:
 };
 ~~~
 
-# <a name="4">07. 重建二叉树</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="07">07. 重建二叉树</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -322,7 +325,7 @@ public:
 根据中序遍历中的左（右）子树的节点数量，可将前序遍历划分为 [ 根节点 | 左子树 | 右子树 ] 。
 ~~~
 
-# <a name="5">09. 用两个栈实现队列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="09">09. 用两个栈实现队列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -395,7 +398,7 @@ public:
 ~~~
 
 
-# <a name="6">10-I. 用两个栈实现队列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="10-I">10-I. 用两个栈实现队列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -448,7 +451,7 @@ public:
 ~~~
 
 
-# <a name="7">10-II. 青蛙跳台阶问题</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="10-II">10-II. 青蛙跳台阶问题</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -493,7 +496,7 @@ public:
 };
 ~~~
 
-# <a name="8">11. 旋转数组的最小数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="11">11. 旋转数组的最小数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -549,7 +552,7 @@ public:
 ~~~
 
 
-# <a name="9">12. 矩阵中的路径</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="12">12. 矩阵中的路径</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -636,9 +639,64 @@ public:
 
 
 
+# <a name="16">16. 数值的整数次方</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。
 
 
-# <a name="10">30. 包含min函数的栈</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+**示例1：**
+
+~~~
+输入: 2.00000, 10
+输出: 1024.00000
+
+~~~
+
+**示例2：**
+~~~
+输入: 2.10000, 3
+输出: 9.26100
+~~~
+
+**示例3：**
+~~~
+输入: 2.00000, -2
+输出: 0.25000
+解释: 2-2 = 1/22 = 1/4 = 0.25
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n==0||x==1) return 1;
+        if(x==0) return 0;
+        long num = n;
+        double res = 1;
+        if(n < 0) 
+        {
+            x = 1/x;
+            num = -num;
+        }
+        while(num)
+        {
+            if(num&1) res *= x;
+            x *= x;
+            num >>= 1;
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+
+
+# <a name="30">30. 包含min函数的栈</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
@@ -711,7 +769,7 @@ public:
 ~~~
 
 
-# <a name="11">59.II. 队列的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="59">59.II. 队列的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
