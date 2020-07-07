@@ -10,9 +10,9 @@
 <a href="#10-II">10-II. 青蛙跳台阶问题</a>  
 <a href="#11">11. 旋转数组的最小数字</a>  
 <a href="#12">12. 矩阵中的路径</a>  
-<a href="#16">16. 数值的整数次方</a> 
+<a href="#16">16. 数值的整数次方</a>  
 <a href="#30">30. 包含min函数的栈</a>  
-<a href="#59">59.II. 队列的最大值</a>  
+<a href="#59">59-II. 队列的最大值</a>  
 
 
 # <a name="03">03. 数组中重复的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
