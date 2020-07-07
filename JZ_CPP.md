@@ -619,3 +619,163 @@ public:
 ~~~cpp
 
 ~~~
+
+
+
+
+
+# 30. 包含min函数的栈
+
+**题目描述**
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+
+
+**示例：**
+
+~~~
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.min();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.min();   --> 返回 -2.
+
+~~~
+
+
+
+**解答1:**
+~~~cpp
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    int min_val;
+    std::stack<std::pair<int,int>> stk;
+    MinStack() {
+        min_val = INT_MAX;
+    }
+    
+    void push(int x) {
+        if(x < min_val)
+        {
+            min_val = x;
+            stk.push({x,min_val});
+        }
+        else
+            stk.push({x,min_val});
+    }
+    
+    void pop() {
+        if(!stk.empty())
+            stk.pop();
+        if(stk.empty())
+            min_val = INT_MAX;
+        else
+            min_val = stk.top().second;
+    }
+    
+    int top() {
+        return stk.top().first;
+    }
+    
+    int min() {
+        return min_val;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(x);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->min();
+ */
+~~~
+
+
+# 59.II. 队列的最大值
+
+**题目描述**
+
+请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
+
+若队列为空，pop_front 和 max_value 需要返回 -1
+
+
+**示例1：**
+~~~
+输入: 
+["MaxQueue","push_back","push_back","max_value","pop_front","max_value"]
+[[],[1],[2],[],[],[]]
+输出: [null,null,null,2,1,2]
+~~~
+
+**示例1：**
+~~~
+输入: 
+["MaxQueue","pop_front","max_value"]
+[[],[],[]]
+输出: [null,-1,-1]
+~~~
+
+**限制：**
+
+* 1 <= push_back,pop_front,max_value的总操作数 <= 10000
+* 1 <= value <= 10^5
+
+**解答1:**
+~~~cpp
+class MaxQueue {
+public:
+    std::stack<int> stk1,stk2;
+    int max_val,sup_val;
+    MaxQueue() {
+        max_val = INT_MIN;
+        sup_val = INT_MIN;
+    }
+    
+    int max_value() {
+        if(stk1.empty())
+            return -1;
+        else return max_val;
+    }
+    
+    void push_back(int value) {
+        stk1.push(value);
+        if(max_val < value)
+            max_val = value;
+    }
+    
+    int pop_front() {
+        if(stk1.empty()) return -1;
+        while(stk1.size() > 1)
+        {
+            stk2.push(stk1.top());
+            if(sup_val < stk1.top()) sup_val = stk1.top();
+            stk1.pop();
+        }
+        max_val = sup_val;
+        sup_val = INT_MIN;
+        int res = stk1.top();
+        stk1.pop();
+        while(!stk2.empty())
+        {
+            stk1.push(stk2.top());
+            stk2.pop();
+        }
+        return res;
+    }
+};
+
+/**
+ * Your MaxQueue object will be instantiated and called as such:
+ * MaxQueue* obj = new MaxQueue();
+ * int param_1 = obj->max_value();
+ * obj->push_back(value);
+ * int param_3 = obj->pop_front();
+ */
+~~~
