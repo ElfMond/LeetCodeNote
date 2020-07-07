@@ -1,5 +1,3 @@
-<a name="index">**Index**</a>
-
 <a href="#03">03. 数组中重复的数字</a>  
 <a href="#04">04. 二维数组中的查找</a>  
 <a href="#05">05. 替换空格</a>  
@@ -11,7 +9,11 @@
 <a href="#11">11. 旋转数组的最小数字</a>  
 <a href="#12">12. 矩阵中的路径</a>  
 <a href="#16">16. 数值的整数次方</a>  
+<a href="#25">25. 合并两个排序的链表</a>  
+<a href="#29">29. 顺时针打印矩阵</a>  
 <a href="#30">30. 包含min函数的栈</a>  
+<a href="#53-I">53-I. 在排序数组中查找数字</a>  
+<a href="#53-II">53-II. 0～n-1中缺失的数字</a>  
 <a href="#59">59-II. 队列的最大值</a>  
 
 
@@ -694,6 +696,126 @@ public:
 
 
 
+# <a name="25">25. 合并两个排序的链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+
+
+**示例1：**
+
+~~~
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+
+~~~
+
+限制：
+~~~
+0 <= 链表长度 <= 1000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        ListNode* res = new ListNode(0);
+        ListNode* current = res;
+        while(l1 != nullptr && l2 != nullptr)
+        {
+            if(l1->val <= l2->val)
+            {
+                current->next = l1;
+                l1 = l1->next;
+            }
+            else
+            {
+                current->next = l2;
+                l2 = l2->next;
+            }
+            current = current->next;
+        }
+        current->next = (l1 == nullptr)? l2:l1;
+        return res->next;
+    }
+};
+~~~
+
+
+
+# <a name="29">29. 顺时针打印矩阵</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+**示例：**
+
+~~~
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+~~~
+
+**限制**
+
+* 0 <= matrix.length <= 100
+* 0 <= matrix[i].length <= 100
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        std::vector<int> res;
+        if(matrix.empty()) return res;
+        int left = 0,right = matrix[0].size() - 1,up = 0,down = matrix.size() - 1;
+        int row = 0 , col = 0;
+        while(true)
+        {
+            for( ;col <= right;col++)
+            {
+                res.push_back(matrix[row][col]);
+            }
+            col--; up++;
+            if(row + 1> down) break;
+            row++;
+            for(;row <= down;row++)
+            {
+                res.push_back(matrix[row][col]);
+            }
+            row--; right--;
+            if(col - 1 < left) break;
+            col--;
+            for(;col >= left;col--)
+            {
+                res.push_back(matrix[row][col]);
+            }
+            col++; down--;
+            if(row - 1 < up) break;
+            row--;
+            for(;row >= up;row--)
+            {
+                res.push_back(matrix[row][col]);
+            }
+            row++; left++;
+            if(col + 1 > right) break;
+            col++;
+        }
+        return res;
+    }
+};
+~~~
+
 
 
 # <a name="30">30. 包含min函数的栈</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -766,6 +888,141 @@ public:
  * int param_3 = obj->top();
  * int param_4 = obj->min();
  */
+~~~
+
+
+# <a name="53">53-I. 在排序数组中查找数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+统计一个数字在排序数组中出现的次数。
+
+**示例1：**
+~~~
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: 2
+~~~
+
+**示例1：**
+~~~
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: 0
+~~~
+
+**限制：**
+~~~
+0 <= 数组长度 <= 50000
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int res = 0;
+        for(int i = 0;i<nums.size();i++)
+        {
+            if(nums[i] == target) res++;
+        }
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size() == 0)
+            return 0;
+        int l = first(nums, target);
+        if (l == -1)
+            return 0;
+        int r = last(nums, target);
+        return r - l + 1;
+    }
+
+    int first(vector<int>& nums, int target){
+        int l = 0;
+        int r = nums.size() - 1;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(nums[mid] == target)
+                r = mid - 1;
+            else if(nums[mid] > target)
+                r = mid - 1;
+            else  // nums[mid] < target
+                l = mid + 1;
+        }
+        if(l >= nums.size() || nums[l] != target) // if(l == nums.size() || nums[r + 1] != target)
+            return -1;
+        return l;
+    }
+
+    int last(vector<int>& nums, int target){
+        int l = 0;
+        int r = nums.size() - 1;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if(nums[mid] == target)
+                l = mid + 1;
+            else if(nums[mid] < target)
+                l = mid + 1;
+            else // nums[mid] > target
+                r = mid - 1;
+        }
+        if(r < 0 || nums[l - 1] != target) // if(r == -1 || nums[r] != target)
+            return -1;
+        return r;
+    }
+};
+~~~
+
+
+# <a name="53-II">53-II. 0～n-1中缺失的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+
+
+**示例1：**
+~~~
+输入: [0,1,3]
+输出: 2
+~~~
+
+**示例1：**
+~~~
+输入: [0,1,2,3,4,5,6,7,9]
+输出: 8
+~~~
+
+**限制：**
+~~~
+1 <= 数组长度 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int left = 0, right = nums.size() - 1;
+        while(left <= right)
+        {
+            int mid = (left + right) >> 1;
+            if(nums[mid] == mid)
+            {
+                left = mid + 1;
+            }
+            else 
+                right = mid - 1;
+        }
+        return left;
+    }
+};
 ~~~
 
 
