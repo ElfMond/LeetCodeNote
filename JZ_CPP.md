@@ -13,6 +13,7 @@
 <a href="#25">25. 合并两个排序的链表</a>  
 <a href="#29">29. 顺时针打印矩阵</a>  
 <a href="#30">30. 包含min函数的栈</a>  
+<a href="#48">48. 最长不含重复字符的子字符串</a>  
 <a href="#53-I">53-I. 在排序数组中查找数字</a>  
 <a href="#53-II">53-II. 0～n-1中缺失的数字</a>  
 <a href="#59">59-II. 队列的最大值</a>  
@@ -889,6 +890,94 @@ public:
  * int param_3 = obj->top();
  * int param_4 = obj->min();
  */
+~~~
+
+
+# <a name="48">48. 最长不含重复字符的子字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。
+
+**示例1：**
+
+~~~
+输入: "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+~~~
+
+
+**示例2：**
+
+~~~
+输入: "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+~~~
+
+**示例3：**
+
+~~~
+输入: "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+~~~
+
+
+**提示**
+
+* s.length <= 40000
+
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.empty()) return 0;
+        std::unordered_map<char, int> slidewindow = {{s[0],0}};
+        int left = 0, right = 0, maxlength = 1;
+        while(++right < s.size())
+        {
+            if(slidewindow.find(s[right]) == slidewindow.end())
+            {
+                slidewindow[s[right]] = right;
+                maxlength = maxlength < (right - left + 1)? right - left + 1 : maxlength;
+            }
+            else
+            {
+                while(slidewindow.find(s[right]) != slidewindow.end())
+                {
+                    slidewindow.erase(s[left]);
+                    left++;
+                }
+                slidewindow[s[right]] = right;
+            }
+        }
+        return maxlength;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int max_length = 0;
+        int front = -1;
+        std::vector<int> dict (256, -1);
+        for(int i = 0; i != s.length(); i++){
+            if(dict[s[i]] > front) 
+                front = dict[s[i]];
+            dict[s[i]] = i;
+            max_length = max(max_length, i - front);
+        }
+        return max_length;
+    }
+};
 ~~~
 
 
