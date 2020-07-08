@@ -981,7 +981,7 @@ public:
 ~~~
 
 
-# <a name="53">53-I. 在排序数组中查找数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="53-1">53-I. 在排序数组中查找数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
