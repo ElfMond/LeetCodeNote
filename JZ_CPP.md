@@ -10,10 +10,15 @@
 <a href="#11">11. 旋转数组的最小数字</a>  
 <a href="#12">12. 矩阵中的路径</a>  
 <a href="#16">16. 数值的整数次方</a>  
+<a href="#18">18. 删除链表的节点</a>  
+<a href="#22">22. 链表中倒数第k个节点</a>  
+<a href="#24">24. 反转链表</a>  
 <a href="#25">25. 合并两个排序的链表</a>  
 <a href="#29">29. 顺时针打印矩阵</a>  
 <a href="#30">30. 包含min函数的栈</a>  
+<a href="#35">35. 复杂链表的复制</a>  
 <a href="#48">48. 最长不含重复字符的子字符串</a>  
+<a href="#50">50. 第一个只出现一次的字符</a>  
 <a href="#53-I">53-I. 在排序数组中查找数字</a>  
 <a href="#53-II">53-II. 0～n-1中缺失的数字</a>  
 <a href="#59">59-II. 队列的最大值</a>  
@@ -697,6 +702,175 @@ public:
 ~~~
 
 
+# <a name="18">18. 删除链表的节点</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。 返回删除后的链表的头节点。
+
+
+**示例1：**
+
+~~~
+输入: head = [4,5,1,9], val = 5
+输出: [4,1,9]
+解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+~~~
+
+**示例2：**
+~~~
+输入: head = [4,5,1,9], val = 1
+输出: [4,5,9]
+解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+~~~
+
+**说明**
+* 题目保证链表中节点的值互不相同
+* 若使用 C 或 C++ 语言，你不需要 free 或 delete 被删除的节点
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteNode(ListNode* head, int val) {
+        if(head->val == val) return head->next;
+        for(auto it = head;it != nullptr;it = it->next)
+        {
+            if(it->next->val == val)
+            {
+                it->next = it->next->next;
+                break;
+            }
+        }
+        return head;
+    }
+};
+~~~
+
+
+# <a name="22">22. 链表中倒数第k个节点</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。
+
+
+**示例1：**
+
+~~~
+给定一个链表: 1->2->3->4->5, 和 k = 2.
+
+返回链表 4->5.
+~~~
+
+
+**解答1:**
+~~~cpp
+//12ms
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        int num = 1;
+        for(auto it = head;it != nullptr; it = it->next)
+        {
+            num++;
+        }
+        auto res = head;
+        for(int i = 1;i < num - k;i++)
+        {
+            res = res->next;
+        }
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+//8ms
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        ListNode* fast = head;
+        for(int i = 0;i < k;i++) fast = fast->next;
+        while(fast)
+        {
+            head = head->next;
+            fast = fast->next;
+        }
+        return head;
+    }
+};
+~~~
+
+# <a name="24">24. 反转链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+
+**示例1：**
+
+~~~
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+~~~
+
+**限制：**
+
+0 <= 节点个数 <= 5000
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        while(head)
+        {
+            ListNode* nxt = head->next;
+            head->next = pre;
+            pre = head;
+            head = nxt;
+        }
+        return pre;
+    }
+};
+~~~
+
 
 # <a name="25">25. 合并两个排序的链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -893,6 +1067,102 @@ public:
 ~~~
 
 
+# <a name="35">35. 复杂链表的复制</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+
+**示例1：**
+
+![eg1](/img/#35-1.png)
+~~~
+输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+~~~
+**示例2：**
+![eg2](/img/#35-2.png)
+~~~
+输入：head = [[1,1],[2,1]]
+输出：[[1,1],[2,1]]
+~~~
+**示例3：**
+![eg3](/img/#35-3.png)
+~~~
+输入：head = [[3,null],[3,0],[3,null]]
+输出：[[3,null],[3,0],[3,null]]
+~~~
+**示例3：**
+~~~
+输入：head = []
+输出：[]
+解释：给定的链表为空（空指针），因此返回 null。
+~~~
+
+**解答1:**
+~~~cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head) return head;
+        Node* ori = head;
+        std::unordered_map<Node*,int> map1;
+        std::unordered_map<int,Node*> map2;
+        std::vector<int> relation;
+        int idx = 0;
+        map1[ori] = idx;
+        Node* resNode = new Node(ori->val);
+        Node* n = resNode;
+        map2[idx] = n;
+        ori = ori->next;
+        while(ori)
+        {
+            idx++;
+            map1[ori] = idx;
+            n->next = new Node(ori->val);
+            n = n->next;
+            map2[idx] = n;
+            ori = ori->next;
+        }
+        Node* ori2 = head;
+        while(ori2)
+        {
+            if(ori2->random == nullptr) 
+                relation.push_back(-1);
+            else 
+                relation.push_back(map1[ori2->random]);
+            ori2 = ori2->next;
+        }
+        int idx_c = 0;
+        Node* n2 = resNode;
+        while(n2)
+        {
+            if(relation[idx_c] == -1) n2->random = nullptr;
+            else n2->random = map2[relation[idx_c]];
+            n2 = n2->next;
+            idx_c++;
+        }
+        return resNode;
+    }
+};
+~~~
+
+
 # <a name="48">48. 最长不含重复字符的子字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -979,6 +1249,80 @@ public:
     }
 };
 ~~~
+
+
+# <a name="50">50. 第一个只出现一次的字符</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+**示例：**
+
+~~~
+s = "abaccdeff"
+返回 "b"
+
+s = "" 
+返回 " "
+~~~
+
+
+**限制**
+
+* 0 <= s 的长度 <= 50000
+
+
+**解答1:**
+~~~cpp
+//96ms
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        if(s.empty()) return ' ';
+        std::unordered_map<char,int> mymap;
+        for(int i = 0;i < s.size();i++)
+        {
+            mymap[s[i]]++;
+        }
+        for(int i = 0;i < s.size();i++) 
+        {
+            if(mymap[s[i]] == 1)
+            {
+                return s[i];
+            }
+        }
+        return ' ';
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+//32ms
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        if(s.empty()) return ' ';
+        int count[26] = {0};
+        for(int i = 0;i < s.size();i++)
+        {
+            int b = s[i] -'a';
+            count[b]++;
+        }
+        for(int i = 0;i < s.size();i++) 
+        {
+            int b = s[i] -'a';
+            if(count[b] == 1)
+            {
+                return s[i];
+            }
+        }
+        return ' ';
+    }
+};
+~~~
+
 
 
 # <a name="53-I">53-I. 在排序数组中查找数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
