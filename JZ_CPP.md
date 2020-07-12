@@ -9,20 +9,36 @@
 <a href="#10-II">10-II. 青蛙跳台阶问题</a>  
 <a href="#11">11. 旋转数组的最小数字</a>  
 <a href="#12">12. 矩阵中的路径</a>  
+<a href="#14-I">14-I. 剪绳子</a>  
+<a href="#15">15. 二进制中1的个数</a>  
 <a href="#16">16. 数值的整数次方</a>  
+<a href="#17">17. 打印从1到最大的n位数</a>  
 <a href="#18">18. 删除链表的节点</a>  
+<a href="#21">21. 调整数组顺序使奇数位于偶数前面</a>  
 <a href="#22">22. 链表中倒数第k个节点</a>  
 <a href="#24">24. 反转链表</a>  
 <a href="#25">25. 合并两个排序的链表</a>  
+<a href="#27">27. 二叉树的镜像</a>  
+<a href="#28">28. 对称的二叉树</a>  
 <a href="#29">29. 顺时针打印矩阵</a>  
 <a href="#30">30. 包含min函数的栈</a>  
+<a href="#32-II">32-II. 从上到下打印二叉树 II</a>  
 <a href="#35">35. 复杂链表的复制</a>  
+<a href="#39">39. 数组中出现次数超过一半的数字</a>  
+<a href="#42">42. 连续子数组的最大和</a>  
+<a href="#47">47. 礼物的最大价值</a>  
 <a href="#48">48. 最长不含重复字符的子字符串</a>  
 <a href="#50">50. 第一个只出现一次的字符</a>  
 <a href="#52">52. 两个链表的第一个公共节点</a>  
 <a href="#53-I">53-I. 在排序数组中查找数字</a>  
 <a href="#53-II">53-II. 0～n-1中缺失的数字</a>  
+<a href="#54">54. 二叉搜索树的第k大节点</a>  
+<a href="#55-I">55-I. 二叉树的深度</a>  
+<a href="#55-II">55-II. 平衡二叉树</a>  
+<a href="#57">57. 和为s的两个数字</a>  
+<a href="#57-II">57-II. 和为s的连续正数序列</a>  
 <a href="#59">59-II. 队列的最大值</a>  
+<a href="#63">63. 股票的最大利润</a>  
 
 
 # <a name="03">03. 数组中重复的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -649,6 +665,134 @@ public:
 
 
 
+# <a name="14-I">14-I. 剪绳子I</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 `k[0],k[1]...k[m-1]` 。请问`k[0]*k[1]*...*k[m-1]`  可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+
+**示例1：**
+
+例如，给出
+~~~
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+~~~
+
+**示例2：**
+~~~
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+~~~
+
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int cuttingRope(int n) {
+        int* num = new int[n+1];
+        *(num+1) = 1;
+        for(int i = 2;i < n + 1;i++)
+        {
+            *(num + i) = *(num + i -1);
+            for(int j = 1;j < i;j++)
+            {
+                
+                if(j*(*(num + i - j)) > *(num + i)) 
+                    *(num + i) = j*(*(num + i - j));
+                if(((i-j)*j) > *(num + i)) 
+                    *(num + i) = (i-j)*j;
+            }
+        }
+        return *(num + n);
+    }
+};
+~~~
+
+
+# <a name="14-II">14-II. 剪绳子II</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 `k[0],k[1]...k[m-1]` 。请问`k[0]*k[1]*...*k[m-1]`  可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+
+**示例1：**
+
+例如，给出
+~~~
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+~~~
+
+**示例2：**
+~~~
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+~~~
+
+
+**解答1:**
+~~~cpp
+
+~~~
+
+
+# <a name="15">15. 二进制中1的个数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。
+
+
+**示例1：**
+
+例如，给出
+~~~
+输入：00000000000000000000000000001011
+输出：3
+解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 '1'。
+~~~
+
+**示例2：**
+~~~
+输入：00000000000000000000000010000000
+输出：1
+解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 '1'。
+~~~
+
+**示例3：**
+~~~
+输入：11111111111111111111111111111101
+输出：31
+解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 '1'。
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int res = 0;
+        while(n)
+        {
+            if(n&1) res++;
+            n>>=1;
+        }
+        return res;
+    }
+};
+~~~
+
+
 # <a name="16">16. 数值的整数次方</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -697,6 +841,41 @@ public:
             x *= x;
             num >>= 1;
         }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="17">17. 打印从1到最大的n位数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入数字 n，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+
+**示例1：**
+
+~~~
+输入: n = 1
+输出: [1,2,3,4,5,6,7,8,9]
+~~~
+
+**说明：**
+
+* 用返回一个整数列表来代替打印
+* n 为正整数
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> printNumbers(int n) {
+        int lim = 1;
+        for(int i = 0;i < n;i++) lim *= 10;
+        std::vector<int> res;
+        for(int i = 0;i < lim-1;i++)
+            res.push_back(i+1);
         return res;
     }
 };
@@ -752,6 +931,59 @@ public:
             }
         }
         return head;
+    }
+};
+~~~
+
+
+# <a name="21">21. 调整数组顺序使奇数位于偶数前面</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+
+
+**示例1：**
+
+~~~
+输入：nums = [1,2,3,4]
+输出：[1,3,2,4] 
+注：[3,1,2,4] 也是正确的答案之一。
+~~~
+
+**提示：**
+
+* 1 <= nums.length <= 50000
+* 1 <= nums[i] <= 10000
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        /*
+        for(int i = 0,j = 0;i < nums.size();i++)
+        {
+            if(!(nums[j]%2)) 
+            {
+                nums.push_back(nums[j]);
+                nums.erase(nums.begin()+j);
+                j--;
+            }
+            j++;
+        }
+        return nums;
+        */
+        if(nums.size()==0) return nums;
+        auto left = nums.begin();
+        auto right = nums.end()-1;
+        while(left < right)
+        {
+            if(((*left)%2 == 0)&&((*right)%2 != 0)) std::swap(*left,*right);
+            if((*left)%2 != 0) left += 1;
+            if((*right)%2 == 0) right -= 1;
+        }
+        return nums;
     }
 };
 ~~~
@@ -930,6 +1162,138 @@ public:
 
 
 
+# <a name="27">27. 二叉树的镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+~~~
+例如输入：
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+镜像输出：
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+~~~
+
+**示例1：**
+
+~~~
+输入：root = [4,2,7,1,3,6,9]
+输出：[4,7,2,9,6,3,1]
+~~~
+
+**限制：**
+~~~
+0 <= 节点个数 <= 1000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* mirrorTree(TreeNode* root) {
+        TreeNode* res = root;
+        rec(root);
+        return res;
+    }
+    void rec(TreeNode* t)
+        {
+            if(t == nullptr) return;
+            TreeNode* tmp = t->left;
+            t->left = t->right;
+            t->right = tmp;
+            rec(t->left);
+            rec(t->right);
+        }
+};
+~~~
+
+
+
+# <a name="28">28.  对称的二叉树</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+~~~
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+~~~
+
+**示例1：**
+~~~
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+~~~
+
+**示例2：**
+~~~
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+~~~
+
+**限制：**
+~~~
+0 <= 节点个数 <= 1000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) return true;
+        return rec(root->left,root->right);
+    }
+    bool rec(TreeNode* left,TreeNode* right)
+    {
+        if(left == nullptr && right == nullptr) return true;
+        if(left == nullptr || right == nullptr) return false;
+        if(left->val != right->val) return false;
+        return rec(left->left,right->right) && rec(left->right,right->left);
+    }
+};
+~~~
+
+
 # <a name="29">29. 顺时针打印矩阵</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -1068,6 +1432,68 @@ public:
 ~~~
 
 
+# <a name="32-II">32-II. 从上到下打印二叉树 II</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+~~~
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        std::vector<std::vector<int>> res;
+        if(root == nullptr) return res;
+        std::queue<TreeNode*> Q;
+        Q.push(root);
+        while(!Q.empty())
+        {
+            int len = Q.size();
+            std::vector<int> subres;
+            for(int i = 0;i < len;i++)
+            {
+                auto front = Q.front();
+                Q.pop();
+                if(front->left) Q.push(front->left);
+                if(front->right) Q.push(front->right);
+                subres.push_back(front->val);
+            }
+            res.push_back(subres);
+        }
+        return res;
+    }
+};
+~~~
+
+
 # <a name="35">35. 复杂链表的复制</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -1165,6 +1591,138 @@ public:
     }
 };
 ~~~
+
+
+# <a name="39">39. 数组中出现次数超过一半的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+
+**示例1：**
+
+~~~
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+~~~
+
+**限制：**
+
+1 <= 数组长度 <= 50000
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        std::unordered_map<int,int> mymap;
+        int len = nums.size();
+        int half = len >> 1;
+        for(int i = 0;i < len;i++)
+        {
+            mymap[nums[i]]++;
+            if(mymap[nums[i]] > half)
+                return nums[i];
+        }
+        return nums[0];
+    }
+};
+~~~
+
+
+# <a name="42">42. 连续子数组的最大和</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个整型数组，数组里有正数也有负数。数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+
+要求时间复杂度为O(n)。
+
+**示例1：**
+
+~~~
+输入: nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+~~~
+
+**提示：**
+
+* 1 <= arr.length <= 10^5
+* -100 <= arr[i] <= 100
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int max = nums[0];
+        int tmp = nums[0];
+        for(int i = 1;i<nums.size();i++)
+        {
+            if(tmp < 0)
+            {
+                tmp = nums[i];
+            }
+            else tmp += nums[i];
+            if(max < tmp) max = tmp;
+        }
+        return max;
+    }
+};
+~~~
+
+
+# <a name="47">47. 礼物的最大价值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+
+**示例1：**
+
+~~~
+输入: 
+[
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+输出: 12
+解释: 路径 1→3→5→2→1 可以拿到最多价值的礼物
+~~~
+
+**提示：**
+
+* 0 < grid.length <= 200
+* 0 < grid[0].length <= 200
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int maxValue(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        for(int i = 1;i < m;i++) grid[i][0] = grid[i-1][0] + grid[i][0];
+        for(int j = 1;j < n;j++) grid[0][j] = grid[0][j-1] + grid[0][j];
+        for(int i = 1;i < m;i++)
+        {
+            for(int j = 1;j < n;j++)
+            {
+                int pre = grid[i-1][j] < grid[i][j-1]? grid[i][j-1] : grid[i-1][j];
+                grid[i][j] += pre;
+            }
+        }
+        return grid[m-1][n-1];
+    }
+};
+~~~
+
+
 
 
 # <a name="48">48. 最长不含重复字符的子字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -1561,6 +2119,344 @@ public:
 ~~~
 
 
+# <a name="54">54. 二叉搜索树的第k大节点</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一棵二叉搜索树，请找出其中第k大的节点。
+
+
+**示例1：**
+~~~
+输入: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+输出: 4
+~~~
+
+**示例2：**
+~~~
+输入: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+输出: 4
+~~~
+
+**限制：**
+~~~
+1 ≤ k ≤ 二叉搜索树元素个数
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int kthLargest(TreeNode* root, int k) {
+        std::stack<TreeNode*> stk;
+        TreeNode* curr = root;
+        while(curr || stk.size())
+        {
+            while(curr)
+            {
+                stk.push(curr);
+                curr = curr->right;
+            }
+            curr = stk.top();
+            stk.pop();
+            if(--k==0) return curr->val;
+            curr = curr->left;
+        }
+        return 0;
+    }
+};
+~~~
+
+
+# <a name="55-I">55-I. 二叉树的深度</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+例如：
+~~~
+给定二叉树 [3,9,20,null,null,15,7]，
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最大深度 3 。
+~~~
+
+**限制：**
+~~~
+节点总数 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        int res = 0;
+        if(root == nullptr) return res;
+        std::queue<TreeNode*> Q;
+        Q.push(root);
+        while(!Q.empty())
+        {
+            int len = Q.size();
+            for(int i = 0;i < len;i++)
+            {
+                TreeNode* front = Q.front();
+                Q.pop();
+                if(front->left) Q.push(front->left);
+                if(front->right) Q.push(front->right);
+            }
+            res++;
+        }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="55-II">55-II. 平衡二叉树</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+ 
+
+**示例 1:**
+~~~
+给定二叉树 [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+~~~
+**示例 2:**
+~~~
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+~~~
+
+**限制：**
+~~~
+1 <= 树的结点个数 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if(root==nullptr) return true;
+        if(abs(maxDepth(root->left) - maxDepth(root->right)) > 1) return false;
+        return(isBalanced(root->left)&&isBalanced(root->right));
+    }
+
+    int maxDepth(TreeNode* root) {
+        int res = 0;
+        if(root == nullptr) return res;
+        std::queue<TreeNode*> Q;
+        Q.push(root);
+        while(!Q.empty())
+        {
+            int len = Q.size();
+            for(int i = 0;i < len;i++)
+            {
+                TreeNode* front = Q.front();
+                Q.pop();
+                if(front->left) Q.push(front->left);
+                if(front->right) Q.push(front->right);
+            }
+            res++;
+        }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="57">57. 和为s的两个数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个**递增排序**的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+**示例 1:**
+~~~
+输入：nums = [2,7,11,15], target = 9
+输出：[2,7] 或者 [7,2]
+~~~
+**示例 2:**
+~~~
+输入：nums = [10,26,30,31,47,60], target = 40
+输出：[10,30] 或者 [30,10]
+~~~
+
+**限制：**
+
+* 1 <= nums.length <= 10^5
+* 1 <= nums[i] <= 10^6
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        std::vector<int> res;
+        std::unordered_map<int,int> mymap;
+        for(int i = 0;i < nums.size();i++)
+        {
+            if(mymap.find(nums[i]) != mymap.end())
+            {
+                res.push_back(nums[mymap[nums[i]]]);
+                res.push_back(nums[i]);
+                return res;
+            }
+            else
+            {
+                mymap[target - nums[i]] = i;
+            }
+        }
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+//faster
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        std::vector<int> res;
+        int left = 0;
+        int right = nums.size() - 1;
+        while(left < right)
+        {
+            if(nums[left] + nums[right] == target)
+            {
+                res.push_back(nums[left]);
+                res.push_back(nums[right]);
+                return res;
+            }
+            if(nums[left] + nums[right] > target)
+                right--;
+            else
+                left++;
+        }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="57-II">57-II. 和为s的连续正数序列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。
+
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+**示例 1:**
+~~~
+输入：target = 9
+输出：[[2,3,4],[4,5]]
+~~~
+**示例 2:**
+~~~
+输入：target = 15
+输出：[[1,2,3,4,5],[4,5,6],[7,8]]
+~~~
+
+**限制：**
+
+* 1 <= target <= 10^5
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        int left = 1,right = 1;
+        std::vector<std::vector<int>> res;
+        while(right <= ((target >> 1) + 1))
+        {
+            int tmp = (left + right)*(right - left + 1);
+            if(tmp == 2*target)
+            {
+                std::vector<int> subres;
+                for(int i = left;i <= right;i++)
+                {
+                    subres.push_back(i);
+                }
+                res.push_back(subres);
+                left++;
+            }
+            else if(tmp < 2*target)
+                right++;
+            else 
+                left++;
+        }
+        return res;
+    }
+};
+~~~
+
+
 # <a name="59">59.II. 队列的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -1578,7 +2474,7 @@ public:
 输出: [null,null,null,2,1,2]
 ~~~
 
-**示例1：**
+**示例2：**
 ~~~
 输入: 
 ["MaxQueue","pop_front","max_value"]
@@ -1642,4 +2538,48 @@ public:
  * obj->push_back(value);
  * int param_3 = obj->pop_front();
  */
+~~~
+
+
+# <a name="63">63. 股票的最大利润</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+
+**示例1：**
+~~~
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+
+~~~
+
+**示例2：**
+~~~
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+~~~
+
+**限制：**
+
+0 <= 数组长度 <= 10^5
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int max = 0;
+        int min_cost = INT_MAX;
+        for(int i = 0 ;i < prices.size();i++)
+        {
+            if(prices[i] < min_cost) min_cost = prices[i];
+            max = prices[i] - min_cost > max? prices[i] - min_cost : max;
+        }
+        return max;
+    }
+};
 ~~~
