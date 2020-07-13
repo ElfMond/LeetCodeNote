@@ -37,7 +37,10 @@
 <a href="#55-II">55-II. 平衡二叉树</a>  
 <a href="#57">57. 和为s的两个数字</a>  
 <a href="#57-II">57-II. 和为s的连续正数序列</a>  
-<a href="#59">59-II. 队列的最大值</a>  
+<a href="#58-I">58-I. 翻转单词顺序</a>  
+<a href="#58-II">58-II. 左旋转字符串</a>  
+<a href="#59-I">59-I. 滑动窗口的最大值</a>  
+<a href="#59-II">59-II. 队列的最大值</a>  
 <a href="#63">63. 股票的最大利润</a>  
 
 
@@ -2457,7 +2460,172 @@ public:
 ~~~
 
 
-# <a name="59">59.II. 队列的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+# <a name="58-I">58-I. 翻转单词顺序</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个英文句子，翻转句子中单词的顺序，但单词内字符的顺序不变。为简单起见，标点符号和普通字母一样处理。例如输入字符串"I am a student. "，则输出"student. a am I"。
+
+**示例 1:**
+~~~
+输入: "the sky is blue"
+输出: "blue is sky the"
+~~~
+**示例 2:**
+~~~
+输入: "  hello world!  "
+输出: "world! hello"
+解释: 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+~~~
+**示例 3:**
+~~~
+输入: "a good   example"
+输出: "example good a"
+解释: 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+~~~
+
+**说明：**
+
+* 无空格字符构成一个单词。
+* 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+* 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    string reverseWords(string s) {
+        std::string res;
+        if(s.empty()) return res;
+        int len = s.size();
+        int left = len - 1,right = len - 1;
+        while(left > -1)
+        {
+            while(s[right] == ' ')
+            {
+                left--;
+                right--;
+                if(left < 0) return res.substr(0,res.size() - 1);
+            }
+            while(left > -1 &&  s[left] != ' ' )
+            {
+                left--;
+            }
+            res.append(s.substr(left + 1,right-left));
+            res.append(" ");
+            right = left;
+        }
+        res = res.substr(0,res.size() - 1);
+        return res;
+    }
+};
+~~~
+
+
+# <a name="58-II">58-II. 左旋转字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+**示例 1:**
+~~~
+输入: s = "abcdefg", k = 2
+输出: "cdefgab"
+~~~
+**示例 2:**
+~~~
+输入: s = "lrloseumgh", k = 6
+输出: "umghlrlose
+~~~
+
+
+**说明：**
+
+* 1 <= k < s.length <= 10000
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    string reverseLeftWords(string s, int n) {
+        return s.substr(n,s.size()-n) + s.substr(0,n);
+    }
+};
+~~~
+
+
+# <a name="59-I">59.I. 滑动窗口的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值
+
+
+**示例1：**
+~~~
+输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,5,5,6,7] 
+解释: 
+
+  滑动窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+~~~
+
+**提示：**
+
+你可以假设 k 总是有效的，在输入数组不为空的情况下，1 ≤ k ≤ 输入数组的大小。
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if(nums.empty()) return {};
+        std::vector<int> res(nums.size()-k+1);
+        for(int idx = 0;idx < res.size();idx++)
+        {
+            res[idx] = INT_MIN;
+            for(int i = idx;i < idx + k;i++)
+            {
+                if(nums[i] > res[idx]) res[idx] = nums[i];
+            }
+        }
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ans;
+        deque<int> deq;
+        int n = nums.size();
+        for (int i = 0; i < n; i++){
+            while(!deq.empty() && nums[i] > nums[deq.back()]){
+                deq.pop_back();
+            }
+            if (!deq.empty() && deq.front() < i - k + 1) deq.pop_front();
+            deq.push_back(i);
+            if (i >= k -1) ans.push_back(nums[deq.front()]);
+        }
+        return ans;
+
+    }
+};
+~~~
+
+
+# <a name="59-II">59.II. 队列的最大值</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
 
