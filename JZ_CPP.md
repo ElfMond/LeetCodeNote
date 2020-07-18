@@ -9,21 +9,30 @@
 <a href="#10-II">10-II. 青蛙跳台阶问题</a>  
 <a href="#11">11. 旋转数组的最小数字</a>  
 <a href="#12">12. 矩阵中的路径</a>  
+<a href="#13">13. 机器人的运动范围</a>  
 <a href="#14-I">14-I. 剪绳子</a>  
 <a href="#15">15. 二进制中1的个数</a>  
 <a href="#16">16. 数值的整数次方</a>  
 <a href="#17">17. 打印从1到最大的n位数</a>  
 <a href="#18">18. 删除链表的节点</a>  
+<a href="#20">20. 表示数值的字符串</a>  
 <a href="#21">21. 调整数组顺序使奇数位于偶数前面</a>  
 <a href="#22">22. 链表中倒数第k个节点</a>  
 <a href="#24">24. 反转链表</a>  
 <a href="#25">25. 合并两个排序的链表</a>  
+<a href="#26">26. 树的子结构</a>  
 <a href="#27">27. 二叉树的镜像</a>  
 <a href="#28">28. 对称的二叉树</a>  
 <a href="#29">29. 顺时针打印矩阵</a>  
 <a href="#30">30. 包含min函数的栈</a>  
+<a href="#31">31. 栈的压入、弹出序列</a>  
+<a href="#32-I">32-I. 从上到下打印二叉树</a>  
 <a href="#32-II">32-II. 从上到下打印二叉树 II</a>  
+<a href="#32-III">32-III. 从上到下打印二叉树 III</a>  
+<a href="#33">33. 二叉搜索树的后序遍历序列</a>  
+<a href="#34">34. 二叉树中和为某一值的路径</a>  
 <a href="#35">35. 复杂链表的复制</a>  
+<a href="#36">36. 二叉搜索树与双向链表</a>  
 <a href="#39">39. 数组中出现次数超过一半的数字</a>  
 <a href="#42">42. 连续子数组的最大和</a>  
 <a href="#47">47. 礼物的最大价值</a>  
@@ -41,8 +50,14 @@
 <a href="#58-II">58-II. 左旋转字符串</a>  
 <a href="#59-I">59-I. 滑动窗口的最大值</a>  
 <a href="#59-II">59-II. 队列的最大值</a>  
+<a href="#60">60. n个骰子的点数</a>  
+<a href="#61">61. 扑克牌中的顺子</a>  
+<a href="#62">62. 圆圈中最后剩下的数字</a>  
 <a href="#63">63. 股票的最大利润</a>  
-
+<a href="#65">65. 不用加减乘除做加法</a>  
+<a href="#66">66. 构建乘积数组</a>  
+<a href="#68-I">68-I. 二叉搜索树的最近公共祖先</a>  
+<a href="#68-II">68-II. 二叉树的最近公共祖先</a>  
 
 # <a name="03">03. 数组中重复的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -668,6 +683,76 @@ public:
 
 
 
+# <a name="13">13. 机器人的运动范围</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+
+**示例1：**
+
+~~~
+输入：m = 2, n = 3, k = 1
+输出：3
+~~~
+
+**示例2：**
+~~~
+输入：m = 3, n = 1, k = 0
+输出：1
+~~~
+
+**提示：**
+
+* 1 <= n,m <= 100
+* 0 <= k <= 20
+
+**解答1:**
+~~~cpp
+//BFS
+class Solution {
+public:
+    int movingCount(int m, int n, int k) {
+        int res = 0;
+        std::vector<std::vector<int>> visited(m , std::vector<int>(n , 0));
+        std::queue<std::pair<int,int>> Q;
+        Q.push({0,0});
+        visited[0][0] = 1;
+        while(Q.size())
+        {
+            std::pair<int,int> curr = Q.front();
+            Q.pop();
+            res++;
+            std::pair<int,int> right = {curr.first,curr.second + 1};
+            std::pair<int,int> down = {curr.first + 1,curr.second};
+            if(right.first < m && right.second < n && digsumvalid(right.first,right.second,k))
+            {
+                if(visited[right.first][right.second] == 0)
+                {
+                    Q.push(right);
+                    visited[right.first][right.second] = 1;
+                }
+            }
+            if(down.first < m && down.second < n && digsumvalid(down.first,down.second,k))
+            {
+                if(visited[down.first][down.second] == 0)
+                {
+                    Q.push(down);
+                    visited[down.first][down.second] = 1;
+                }
+            }
+        }
+        return res;
+    }
+    bool digsumvalid(int m,int n,int k) 
+    {
+        return ((n % 10 + (n / 10) % 10 + (n / 100) % 10)+(m % 10 + (m / 10) % 10 + (m / 100) % 10)) <= k;
+    }
+};
+~~~
+
+
 # <a name="14-I">14-I. 剪绳子I</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -939,6 +1024,92 @@ public:
 ~~~
 
 
+# <a name="20">20. 表示数值的字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100"、"5e2"、"-123"、"3.1416"、"0123"都表示数值，但"12e"、"1a3.14"、"1.2.3"、"+-5"、"-1E-16"及"12e+5.4"都不是。
+
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    bool isNumber(string s) {
+        if(deleteblank(s) == false) return false;
+        if(deleteblankback(s) == false) return false;
+        if(s.empty()) return false;
+        if(deletesign(s) == false) return false;
+        if(deletedig(s) == false) return false;
+        if(s[0] == '\0') return true;
+        if(deletee(s) == false) return false;
+        if(deletesign(s) == false) return false;
+        if(deleteintdig(s) == false) return false;
+        return true;
+    }
+    bool deleteblank(string& s)
+    {
+        while(s[0] == ' ')
+            s = s.substr(1,s.size() - 1);
+        if(s.empty()) return false;
+        return true;
+    }
+    bool deleteblankback(string& s)
+    {
+        while(s[s.size() - 1] == ' ')
+            s = s.substr(0,s.size() - 1);
+        if(s.empty()) return false;
+        return true;
+    }
+    bool deletesign(string& s)
+    {
+        if(s[0] == '+' || s[0] == '-')
+            s = s.substr(1,s.size() - 1);
+        return (s[0] >= '0' && s[0] <= '9')|| s[0] == '.';
+    }
+    bool deletedig(string& s)
+    {
+        bool front = false;
+        bool back = false;
+        while(s[0] >= '0' && s[0] <= '9')
+        {
+            s = s.substr(1,s.size() - 1);
+            front = true;
+        }
+        if(s[0] == '.') 
+        {
+            s = s.substr(1,s.size() - 1);
+            if(!((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || s[0] == 'e')) return false;
+            while(s[0] >= '0' && s[0] <= '9')
+            {
+                s = s.substr(1,s.size() - 1);
+                back = true;
+            }
+            if(s[0] == 'e'||s[0] == '\0') return front|back;
+            else return false;
+        }
+        if(s[0] == 'e'||s[0] == '\0') return true;
+        else return false;
+    }
+    bool deletee(string& s)
+    {
+        if(s[0] == 'e')
+            s = s.substr(1,s.size() - 1);
+        return (s[0] == '+' || s[0] == '-' || (s[0] >= '0' && s[0] <= '9'));
+    }
+    bool deleteintdig(string& s)
+    {
+        while(s[0] >= '0' && s[0] <= '9')
+        {
+            s = s.substr(1,s.size() - 1);
+        }
+        if(s[0] == '\0') return true;
+        else return false;
+    }
+};
+~~~
+
+
 # <a name="21">21. 调整数组顺序使奇数位于偶数前面</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -1163,6 +1334,153 @@ public:
 };
 ~~~
 
+
+# <a name="26">26. 树的子结构</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+~~~
+例如:
+给定的树 A:
+
+     3
+    / \
+   4   5
+  / \
+ 1   2
+给定的树 B：
+
+   4 
+  /
+ 1
+返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。
+~~~
+
+**示例1：**
+
+~~~
+输入：A = [1,2,3], B = [3,1]
+输出：false
+~~~
+
+**示例2: **
+~~~
+输入：A = [3,4,5,1,2], B = [4,1]
+输出：true
+~~~
+限制：
+~~~
+0 <= 节点个数 <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        if(B == nullptr || A == nullptr) return false;
+        std::queue<TreeNode*> Q;
+        Q.push(A);
+        while(Q.size())
+        {
+            TreeNode* currA = Q.front();
+            if(currA->val == B->val) 
+            {
+                if(compare(currA, B))
+                    return true;
+            }
+            Q.pop();
+            if(currA->left != nullptr) Q.push(currA->left);
+            if(currA->right != nullptr) Q.push(currA->right);
+        }
+        return false;
+    }
+    bool compare(TreeNode* A, TreeNode* B)
+    {
+        std::queue<TreeNode*> QB;
+        std::queue<TreeNode*> QAA;
+        QB.push(B);
+        QAA.push(A);
+        while(QB.size())
+        {
+            TreeNode* currB = QB.front();
+            TreeNode* currA = QAA.front();
+            if(currA->val != currB->val) return false;
+            QB.pop();
+            QAA.pop();
+            if(currB->left != nullptr)
+            {
+                if(currA->left == nullptr)
+                    return false;
+                else
+                    QB.push(currB->left);
+                    QAA.push(currA->left);
+            }
+            if(currB->right != nullptr)
+            {
+                if(currA->right == nullptr)
+                    return false;
+                else
+                    QB.push(currB->right);
+                    QAA.push(currA->right);
+            }
+        }
+        return true;
+    }
+};
+~~~
+**解答2:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        if(B == nullptr || A == nullptr) return false;
+        std::queue<TreeNode*> Q;
+        Q.push(A);
+        while(Q.size())
+        {
+            TreeNode* currA = Q.front();
+            if(currA->val == B->val) 
+            {
+                if(compare(currA, B))
+                    return true;
+            }
+            Q.pop();
+            if(currA->left != nullptr) Q.push(currA->left);
+            if(currA->right != nullptr) Q.push(currA->right);
+        }
+        return false;
+    }
+    bool compare(TreeNode* A, TreeNode* B)
+    {
+        if(B == nullptr) return true;
+        if(A == nullptr) return false;
+        if(A->val == B->val) return compare(A->left,B->left)&compare(A->right, B->right);
+        return false;
+    }
+};
+~~~
 
 
 # <a name="27">27. 二叉树的镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -1435,6 +1753,105 @@ public:
 ~~~
 
 
+# <a name="31">31. 栈的压入、弹出序列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。
+
+**示例1：**
+
+~~~
+输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+输出：true
+解释：我们可以按以下顺序执行：
+push(1), push(2), push(3), push(4), pop() -> 4,
+push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
+~~~
+
+**示例2：**
+~~~
+输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]
+输出：false
+解释：1 不能在 2 之前弹出。
+~~~
+
+**解答1:**
+~~~cpp
+//模拟栈混洗
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        if(pushed.empty()) return true;
+        std::stack<int> B;
+        int p = 0;
+        for(int idx = 0;idx < popped.size();idx++)
+        {
+            if(p == pushed.size()  && B.top() != popped[idx]) return false;
+            while((B.empty() || B.top() != popped[idx]) && (p < pushed.size()))
+            {
+                B.push(pushed[p++]);
+            }
+            B.pop();
+        }
+        return true;
+    }
+};
+~~~
+
+
+# <a name="32-I">32-I. 从上到下打印二叉树</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+~~~
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+[3,9,20,15,7]
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> levelOrder(TreeNode* root) {
+        std::queue<TreeNode*> Q;
+        std::vector<int> res;
+        if(root == nullptr) return res;
+        Q.push(root);
+        while(Q.size())
+        {
+            res.push_back(Q.front()->val);
+            if(Q.front()->left) Q.push(Q.front()->left);
+            if(Q.front()->right) Q.push(Q.front()->right);
+            Q.pop();
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+
 # <a name="32-II">32-II. 从上到下打印二叉树 II</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -1495,6 +1912,193 @@ public:
     }
 };
 ~~~
+
+
+
+# <a name="32-III">32-III. 从上到下打印二叉树 III</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+~~~
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层次遍历结果：
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+~~~
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        std::vector<std::vector<int>> res;
+        std::queue<TreeNode*> Q;
+        if(root == nullptr) return res;
+        Q.push(root);
+        int len = Q.size();
+        bool l = true;
+        while(len)
+        {
+            std::vector<int> subres;
+            for(int i = 0;i < len;i++)
+            {
+                subres.push_back(Q.front()->val);
+                if(Q.front()->left) Q.push(Q.front()->left);
+                if(Q.front()->right) Q.push(Q.front()->right);
+                Q.pop();
+            }
+            len = Q.size();
+            if(!l) std::reverse(subres.begin(),subres.end());
+            res.push_back(subres);
+            l = !l;
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+# <a name="33">33. 二叉搜索树的后序遍历序列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
+
+ 
+~~~
+参考以下这颗二叉搜索树：
+
+     5
+    / \
+   2   6
+  / \
+ 1   3
+~~~
+
+**示例1：**
+
+~~~
+输入: [1,6,3,2,5]
+输出: false
+~~~
+**示例2：**
+
+~~~
+输入: [1,3,2,6,5]
+输出: true
+~~~
+
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        if(postorder.size() < 3) return true;
+        int mid = postorder[postorder.size() - 1];
+        auto idx_left = postorder.begin();
+        while(idx_left < postorder.end() && *idx_left < mid) idx_left++;
+        auto idx_right = idx_left;
+        while(idx_right < postorder.end() - 1)
+        {
+            if(*idx_right < mid) return false;
+            idx_right++;
+        }
+        std::vector<int> a(postorder.begin(),idx_left);
+        std::vector<int> b(idx_left,postorder.end() - 1);
+        return (verifyPostorder(a))&(verifyPostorder(b));
+    }
+};
+~~~
+
+# <a name="34">34. 二叉树中和为某一值的路径</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
+
+**示例:**
+
+给定如下二叉树，以及目标和 sum = 22，
+~~~
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+~~~
+返回:
+~~~
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+~~~
+
+**提示：**
+
+节点总数 <= 10000
+
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    std::vector<std::vector<int>> res;
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        if(root == nullptr) return res;
+        std::vector<int> subres;
+        findpath(root,sum,subres);
+        return res;
+    }
+    void findpath(TreeNode* root,int sum,std::vector<int>& subres)
+    {
+        if(root == nullptr) return;
+        subres.emplace_back(root->val);
+        if(root->val == sum && root->left == nullptr && root->right == nullptr) 
+        {
+            res.emplace_back(subres);
+        }
+        findpath(root->left,sum-root->val,subres);
+        findpath(root->right,sum-root->val,subres);
+        subres.pop_back();
+    }
+};
+~~~
+
 
 
 # <a name="35">35. 复杂链表的复制</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
@@ -1591,6 +2195,85 @@ public:
             idx_c++;
         }
         return resNode;
+    }
+};
+~~~
+
+
+
+# <a name="36">36. 二叉搜索树与双向链表</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
+
+为了让您更好地理解问题，以下面的二叉搜索树为例：
+
+
+![eg](/img/36_1.png)
+我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。
+
+下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。
+
+![eg](/img/36_2.png)
+
+特别地，我们希望可以就地完成转换操作。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。
+
+**解答1:**
+~~~cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        left = NULL;
+        right = NULL;
+    }
+
+    Node(int _val, Node* _left, Node* _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+public:
+    Node* treeToDoublyList(Node* root) {
+        if(root == nullptr) return root;
+        std::stack<Node*> S;
+        Node* curr = root;
+        std::vector<Node*> v;
+        while(S.size() || curr != nullptr)
+        {
+            if(curr != nullptr)
+            {
+                S.push(curr);
+                curr = curr->left;
+            }
+            else
+            {
+                Node* top = S.top();
+                v.emplace_back(top);
+                S.pop();
+                curr = top->right;
+            }
+        }
+        for(int i = 0;i < v.size() - 1;i++)
+        {
+            v[i]->right = v[i+1];
+            v[i+1]->left = v[i];
+        }
+        v[v.size()-1]->right = v[0];
+        v[0]->left = v[v.size()-1];
+        return v[0];
     }
 };
 ~~~
@@ -2708,6 +3391,174 @@ public:
  */
 ~~~
 
+# <a name="60">60. n个骰子的点数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+
+你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+
+**示例1：**
+~~~
+输入: 1
+输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
+~~~
+
+**示例2：**
+~~~
+输入: 2
+输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
+
+~~~
+
+**限制：**
+
+0 <= 数组长度 <= 10^5
+
+**解答1:**
+~~~cpp
+public:
+    vector<double> twoSum(int n) {
+        int res[70] = {0};
+        int all = 6;
+        for(int i = 1;i < 7;i++) res[i] = 1;
+        for(int j = 1;j < n;j++)
+        {
+            for(int k = 6*(j+1);k > j;k--)
+            {
+                res[k] = 0;
+                for(int step = 1;step < 7 && k-step > j-1;step++)
+                {
+                    res[k] += res[k-step];
+                }
+            }
+            all *= 6;
+        }
+        std::vector<double> ret;
+        for(int idx = n;idx < 6*n + 1;idx++)
+        {
+            ret.push_back(double(res[idx])/all);
+        }
+        return ret;
+    }
+};
+~~~
+
+
+# <a name="61">61. 扑克牌中的顺子</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+从扑克牌中随机抽5张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。
+
+**示例1：**
+~~~
+输入: [1,2,3,4,5]
+输出: True
+~~~
+
+**示例2：**
+~~~
+输入: [0,0,1,2,5]
+输出: True
+~~~
+
+**限制：**
+
+数组长度为 5 
+
+数组的数取值为 [0, 13] .
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    bool isStraight(vector<int>& nums) {
+        int valid = 0;
+        int min = INT_MAX;
+        int max = INT_MIN;
+        std::unordered_map<int,int> mymap;
+        for(int i = 0;i < nums.size();i++)
+        {
+            if(nums[i] == 0)
+            {
+                valid++;
+                continue;
+            }
+            if(mymap.find(nums[i])==mymap.end())
+            {
+                valid++;
+                mymap[nums[i]] = i;
+                if(nums[i] < min) min = nums[i];
+                if(nums[i] > max) max = nums[i];
+            }
+        }
+        if(valid==5 && (max-min<5)) return true;
+        else return false;
+    }
+};
+~~~
+
+
+# <a name="62">62. 圆圈中最后剩下的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+0,1,,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字。求出这个圆圈里剩下的最后一个数字。
+
+例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。
+
+**示例1：**
+~~~
+输入: n = 5, m = 3
+输出: 3
+~~~
+
+**示例2：**
+~~~
+输入: n = 10, m = 17
+输出: 2
+~~~
+
+**限制：**
+
+* 1 <= n <= 10^5
+* 1 <= m <= 10^6
+
+**解答1:**
+~~~cpp
+//over time limit
+class Solution {
+public:
+    int lastRemaining(int n, int m) {
+        std::vector<int> vec;
+        for(int i = 0;i < n;i++) vec.push_back(i);
+        int idx = 0;
+        for(int i = 0;i < n - 1;i++)
+        {
+            int len = vec.size();
+            idx = (idx + (m - 1)) % len;
+            vec.erase(vec.begin() + idx);
+        }
+        return vec[0];
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    int lastRemaining(int n, int m) {
+        int ans = 0;
+        for(int i = 2;i < n + 1;i++)
+            ans = (ans + m) % i;
+        return ans;
+    }
+};
+~~~
+
 
 # <a name="63">63. 股票的最大利润</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -2748,6 +3599,228 @@ public:
             max = prices[i] - min_cost > max? prices[i] - min_cost : max;
         }
         return max;
+    }
+};
+~~~
+
+
+# <a name="65">65. 不用加减乘除做加法</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+
+**示例1：**
+~~~
+输入: a = 1, b = 1
+输出: 2
+~~~
+
+
+**限制：**
+
+* a, b 均可能是负数或 0
+* 结果不会溢出 32 位整数
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int add(int a, int b) {
+        int res = a^b;
+        int ov = (unsigned int)(a&b)<<1;
+        while(ov)
+        {
+            int tmp = res;
+            res = res ^ ov;
+            ov = (unsigned int)(tmp & ov) << 1;
+        }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="66">66. 构建乘积数组</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B 中的元素 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。
+
+
+**示例1：**
+~~~
+输入: [1,2,3,4,5]
+输出: [120,60,40,30,24]
+~~~
+
+
+**限制：**
+
+* 所有元素乘积之和不会溢出 32 位整数
+* a.length <= 100000
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> constructArr(vector<int>& a) {
+        std::vector<int> res(a.size(),1);
+        for(int i = 1;i<a.size();i++)
+        {
+            res[i] = res[i-1]*a[i-1];
+        }
+        int tmp = 1;
+        for(int i = a.size()-2;i > -1;i--)
+        {
+            tmp *= a[i+1];
+            res[i] *= tmp;
+        }
+        return res;
+    }
+};
+~~~
+
+
+
+# <a name="68-I">68-I. 二叉搜索树的最近公共祖先</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+最近公共祖先的定义为：对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)
+
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+
+![eg](img/68-I.png)
+
+**示例1：**
+~~~
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+~~~
+
+**示例2：**
+~~~
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+~~~
+
+**限制：**
+
+* 所有节点的值都是唯一的。
+* p、q 为不同节点且均存在于给定的二叉搜索树中。
+
+**解答1:**
+~~~cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if((root->val - q->val)*(root->val - p->val) <= 0) return root;
+        else if(root->val < q->val) return lowestCommonAncestor(root->right, p, q);
+        else return lowestCommonAncestor(root->left, p, q);
+    }
+};
+~~~
+
+
+
+
+# <a name="68-II">68-II. 二叉树的最近公共祖先</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+最近公共祖先的定义为：对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)
+
+例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]
+
+![eg](img/68-II.png)
+
+**示例1：**
+~~~
+输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+输出: 3
+解释: 节点 5 和节点 1 的最近公共祖先是节点 3。
+~~~
+
+**示例2：**
+~~~
+输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+输出: 5
+解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。
+~~~
+
+**限制：**
+
+* 所有节点的值都是唯一的。
+* p、q 为不同节点且均存在于给定的二叉树中。
+
+**解答1:**
+~~~cpp
+//1548ms
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root->val == p->val || root->val == q->val) return root;
+        if(insubtree(root->left,p)&&insubtree(root->left,q)) 
+            return lowestCommonAncestor(root->left,p,q);
+        if(insubtree(root->right,p)&&insubtree(root->right,q))
+            return lowestCommonAncestor(root->right,p,q);
+        else return root;
+    }
+    bool insubtree(TreeNode* root,TreeNode* target)
+    {
+        if(root == nullptr) return false;
+        if(root->val == target->val) return true;
+        else return insubtree(root->left,target) || insubtree(root->right,target);
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+//28ms
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr ||root->val == p->val || root->val == q->val) return root;
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        if(left == nullptr) return right;
+        if(right == nullptr) return left;
+        return root;
     }
 };
 ~~~
