@@ -33,8 +33,13 @@
 <a href="#34">34. 二叉树中和为某一值的路径</a>  
 <a href="#35">35. 复杂链表的复制</a>  
 <a href="#36">36. 二叉搜索树与双向链表</a>  
+<a href="#38">38. 字符串的排列</a>  
 <a href="#39">39. 数组中出现次数超过一半的数字</a>  
 <a href="#42">42. 连续子数组的最大和</a>  
+<a href="#43">43. 1～n整数中1出现的次数</a>  
+<a href="#44">44. 数字序列中某一位的数字</a>  
+<a href="#45">45. 把数组排成最小的数</a>  
+<a href="#46">46. 把数字翻译成字符串</a>  
 <a href="#47">47. 礼物的最大价值</a>  
 <a href="#48">48. 最长不含重复字符的子字符串</a>  
 <a href="#50">50. 第一个只出现一次的字符</a>  
@@ -44,6 +49,8 @@
 <a href="#54">54. 二叉搜索树的第k大节点</a>  
 <a href="#55-I">55-I. 二叉树的深度</a>  
 <a href="#55-II">55-II. 平衡二叉树</a>  
+<a href="#56-I">56-I. 数组中数字出现的次数</a>  
+<a href="#56-II">56-II. 数组中数字出现的次数 II</a>  
 <a href="#57">57. 和为s的两个数字</a>  
 <a href="#57-II">57-II. 和为s的连续正数序列</a>  
 <a href="#58-I">58-I. 翻转单词顺序</a>  
@@ -54,6 +61,7 @@
 <a href="#61">61. 扑克牌中的顺子</a>  
 <a href="#62">62. 圆圈中最后剩下的数字</a>  
 <a href="#63">63. 股票的最大利润</a>  
+<a href="#64">64. 求1+2+…+n</a>  
 <a href="#65">65. 不用加减乘除做加法</a>  
 <a href="#66">66. 构建乘积数组</a>  
 <a href="#68-I">68-I. 二叉搜索树的最近公共祖先</a>  
@@ -2279,6 +2287,51 @@ public:
 ~~~
 
 
+# <a name="38">38. 字符串的排列</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个字符串，打印出该字符串中字符的所有排列。
+
+你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。
+
+**示例:**
+~~~
+输入：s = "abc"
+输出：["abc","acb","bac","bca","cab","cba"]
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+	std::vector<std::string> res;
+	std::string s;
+    vector<string> permutation(string c) {
+        s = c;
+        perm(0);
+        return res;
+    }
+    void perm(int x)
+	{
+        if (x == s.size() - 1) res.push_back(s);
+        std::unordered_map<char,int> charset;
+        for (int i = x; i < s.size(); i++)
+        {
+            if (charset.find(s[i]) != charset.end()) continue;
+            charset[s[i]] = i;
+            char tmp = s[i];
+            s[i] = s[x];
+            s[x] = tmp;
+            perm(x + 1);
+            s[x] = s[i];
+            s[i] = tmp;
+        }
+	}
+};
+~~~
+
+
 # <a name="39">39. 数组中出现次数超过一半的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -2319,6 +2372,8 @@ public:
 ~~~
 
 
+
+
 # <a name="42">42. 连续子数组的最大和</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -2357,6 +2412,216 @@ public:
             if(max < tmp) max = tmp;
         }
         return max;
+    }
+};
+~~~
+
+
+
+# <a name="43">43. 1～n整数中1出现的次数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。
+
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
+
+
+
+**示例1：**
+
+~~~
+输入：n = 12
+输出：5
+~~~
+
+**示例2：**
+
+~~~
+输入：n = 13
+输出：6
+~~~
+
+**限制：**
+
+1 <= n < 2^31
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int countDigitOne(int n) {
+        int high = n/10;
+        int curr = n%10;
+        int low = 0;
+        long dig = 1;
+        int res = 0;
+        while(high != 0 || curr != 0)
+        {
+            if(curr == 0) res += high*dig;
+            else if(curr == 1) res += high*dig + low + 1;
+            else if(curr > 1) res += high*dig + dig;
+            dig *= 10;
+            high = high/10;
+            low = n%dig;
+            curr = (n/dig)%10;
+        }
+        return res;
+    }
+};
+~~~
+
+
+# <a name="44">44. 数字序列中某一位的数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+数字以0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第5位（从下标0开始计数）是5，第13位是1，第19位是4，等等。
+
+请写一个函数，求任意第n位对应的数字。
+
+
+**示例1：**
+
+~~~
+输入：n = 3
+输出：3
+~~~
+
+**示例2：**
+
+~~~
+输入：n = 11
+输出：0
+~~~
+
+**限制：**
+
+1 <= n < 2^31
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int findNthDigit(int n) {
+        if(n < 10) return n;
+        n = n - 10;
+        int stage = 2;
+        long num = 90;
+        long cap = num*stage;
+        while(n > cap)
+        {
+            n -= cap;
+            stage++;
+            num *= 10;
+            cap = num*stage;
+        }
+        int first_num = 1;
+        for(int i = 1;i<stage;i++) first_num *= 10;
+        int numofdig = n/stage;
+        int inthis = first_num + numofdig;
+        int posindig = n%stage;
+        for(int j = 0;j<posindig;j++) first_num /= 10;
+        return (inthis/first_num)%10;
+    }
+};
+~~~
+
+
+# <a name="45">45. 把数组排成最小的数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+
+
+**示例1：**
+
+~~~
+输入: [10,2]
+输出: "102"
+~~~
+
+**示例2：**
+
+~~~
+输入: [3,30,34,5,9]
+输出: "3033459"
+~~~
+
+**限制：**
+
+0 < nums.length <= 100
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    string minNumber(vector<int>& nums) {
+        std::sort(nums.begin(),nums.end(),compare);
+        std::string res;
+        for(int num : nums)
+        {
+            res += std::to_string(num);
+        }
+        return res;
+    }
+    static bool compare(const int& a,const int& b)
+    {
+        return std::to_string(a)+std::to_string(b)<std::to_string(b)+std::to_string(a);
+    }
+};
+~~~
+
+
+# <a name="46">46. 把数字翻译成字符串</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+
+
+
+**示例1：**
+
+~~~
+输入: 12258
+输出: 5
+解释: 12258有5种不同的翻译，分别是"bccfi", "bwfi", "bczi", "mcfi"和"mzi"
+~~~
+
+**限制：**
+
+0 <= num < 231
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int translateNum(int num) {
+        std::vector<int> numvec;
+        while(num)
+        {
+            numvec.insert(numvec.begin(),num%10);
+            num /= 10;
+        }
+        int prepre = 1;
+        int pre = 1;
+        for(int i = 1;i < numvec.size();i++)
+        {
+            if(10*numvec[i-1]+numvec[i] < 26 && numvec[i-1] != 0) 
+            {
+                int tmp = pre;
+                pre = prepre + pre;
+                prepre = tmp;
+            }
+            else
+            {
+                pre = pre;
+                prepre = pre;
+            }
+        }
+        return pre;
     }
 };
 ~~~
@@ -3014,6 +3279,145 @@ public:
 ~~~
 
 
+# <a name="56-I">56-I. 数组中数字出现的次数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+一个整型数组 nums 里除两个数字之外，其他数字都出现了两次。请写程序找出这两个只出现一次的数字。要求时间复杂度是O(n)，空间复杂度是O(1)。
+
+ 
+
+**示例 1:**
+~~~
+输入：nums = [4,1,4,6]
+输出：[1,6] 或 [6,1]
+~~~
+**示例 2:**
+~~~
+输入：nums = [1,2,10,4,1,4,3,3]
+输出：[2,10] 或 [10,2]
+~~~
+
+**限制：**
+~~~
+2 <= nums.length <= 10000
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        std::vector<int> res;
+        std::unordered_map<int, int> mymap;
+        for(int num:nums) mymap[num]++;
+        for(auto p:mymap) 
+            if(p.second == 1) res.push_back(p.first);
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        int ab = 0;
+        int a = 0;
+        int b = 0;
+        for(int num : nums) ab ^= num;
+        int div = 1;
+        while((div&ab) == 0) div<<=1;
+        for(int num :nums) 
+        {
+            if(num&div) a ^= num;
+            else b ^= num;
+        }
+        return {a,b};
+    }
+};
+~~~
+
+
+# <a name="56-II">56-II. 数组中数字出现的次数 II</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+
+
+**示例 1:**
+~~~
+输入：nums = [3,4,3,3]
+输出：4
+~~~
+**示例 2:**
+~~~
+输入：nums = [9,1,7,9,7,9,7]
+输出：1
+~~~
+
+**限制：**
+~~~
+1 <= nums.length <= 10000
+1 <= nums[i] < 2^31
+~~~
+
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int res;
+        std::unordered_map<int, int> mymap;
+        for(int num:nums) mymap[num]++;
+        for(auto p:mymap) 
+            if(p.second == 1) res = p.first;
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+/*  
+            ab    ab    ab    ab
+    状态机: 00 -> 01 -> 10 -> 00
+    真值表:
+    c   b   a   b'
+    0   0   1   0
+    0   0   0   0
+    0   1   1   0
+    0   1   0   1
+    1   0   1   0
+    1   0   0   1
+    1   1   1   0
+    1   1   0   0
+    取结果为1的情况：b' = ~ab~c + ~a~bc = ~a(b~c+~bc) = ~a(b^c)
+    因此，可以推出: b = b ^ c & ~a
+
+    在更新b之后：
+            ab    ab    ab    ab
+    状态机: 01 -> 00 -> 10 -> 01
+    调换ab: ba    ba    ba    ba
+    状态机: 10 -> 00 -> 01 -> 10
+    与上述一致，因此，可以推出：a = a ^ c & ~b
+*/
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int a = 0, b = 0;
+        for (int c: nums) {
+            b = b ^ c & ~a;
+            a = a ^ c & ~b;
+        }
+        return b;
+    }
+};
+~~~
+
+
 # <a name="57">57. 和为s的两个数字</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **题目描述**
@@ -3599,6 +4003,53 @@ public:
             max = prices[i] - min_cost > max? prices[i] - min_cost : max;
         }
         return max;
+    }
+};
+~~~
+
+
+# <a name="64">64. 求1+2+…+n</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+**示例1：**
+~~~
+输入: n = 3
+输出: 6
+~~~
+
+**示例2：**
+~~~
+输入: n = 9
+输出: 45
+~~~
+
+**限制：**
+
+1 <= n <= 10000
+
+**解答1:**
+~~~cpp
+// &&短路 n==false时不运行后续操作
+class Solution {
+public:
+    int sumNums(int n) {
+        int res = n;
+        n && (res+=sumNums(n-1));
+        return res;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    int sumNums(int n) {
+        bool arr[n][n + 1];
+        return sizeof(arr)>>1;
     }
 };
 ~~~
