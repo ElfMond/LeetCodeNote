@@ -15,6 +15,7 @@
 <a href="#16">16. 数值的整数次方</a>  
 <a href="#17">17. 打印从1到最大的n位数</a>  
 <a href="#18">18. 删除链表的节点</a>  
+<a href="#19">19. 正则表达式匹配</a>  
 <a href="#20">20. 表示数值的字符串</a>  
 <a href="#21">21. 调整数组顺序使奇数位于偶数前面</a>  
 <a href="#22">22. 链表中倒数第k个节点</a>  
@@ -35,6 +36,7 @@
 <a href="#36">36. 二叉搜索树与双向链表</a>  
 <a href="#38">38. 字符串的排列</a>  
 <a href="#39">39. 数组中出现次数超过一半的数字</a>  
+<a href="#41">41. 数据流中的中位数</a>  
 <a href="#42">42. 连续子数组的最大和</a>  
 <a href="#43">43. 1～n整数中1出现的次数</a>  
 <a href="#44">44. 数字序列中某一位的数字</a>  
@@ -1027,6 +1029,83 @@ public:
             }
         }
         return head;
+    }
+};
+~~~
+
+
+# <a name="19">19. 正则表达式匹配</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+请实现一个函数用来匹配包含'. '和'\*'的正则表达式。模式中的字符'.'表示任意一个字符，而'\*'表示它前面的字符可以出现任意次（含0次）。在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab\*ac\*a"匹配，但与"aa.a"和"ab\*a"均不匹配。
+
+**示例1：**
+
+~~~
+输入:
+s = "aa"
+p = "a"
+输出: false
+解释: "a" 无法匹配 "aa" 整个字符串。
+~~~
+
+**示例2：**
+~~~
+输入:
+s = "aa"
+p = "a*"
+输出: true
+解释: 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。
+~~~
+
+**示例3:**
+~~~
+输入:
+s = "ab"
+p = ".*"
+输出: true
+解释: ".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。
+~~~
+**示例4:**
+~~~
+输入:
+s = "aab"
+p = "c*a*b"
+输出: true
+解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
+~~~
+**示例5:**
+~~~
+输入:
+s = "mississippi"
+p = "mis*is*p*."
+输出: false
+~~~
+
+**说明**
+* s 可能为空，且只包含从 a-z 的小写字母。
+* p 可能为空，且只包含从 a-z 的小写字母以及字符 . 和 \*，无连续的 ' \*'。
+* 
+**解答1:**
+~~~cpp
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if(p[0]=='\0')
+        {
+            if(s[0]=='\0') //递归出口
+                return true;
+            else
+                return false;
+        }
+        if(p[1] == '*') //匹配*
+        {
+            if(isMatch(s,p.substr(2))) return true;
+            if(s[0] != '\0' && (s[0] == p[0] || p[0] == '.') && isMatch(s.substr(1), p)) return true;
+        }
+        if(s[0] != '\0' && (s[0] == p[0] || p[0] == '.') && isMatch(s.substr(1), p.substr(1))) return true;
+        else return false;
     }
 };
 ~~~
@@ -2373,6 +2452,95 @@ public:
 
 
 
+# <a name="41">41. 数据流中的中位数</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+**题目描述**
+
+如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+
+例如，
+
+[2,3,4] 的中位数是 3
+
+[2,3] 的中位数是 (2 + 3) / 2 = 2.5
+
+设计一个支持以下两种操作的数据结构：
+
+void addNum(int num) - 从数据流中添加一个整数到数据结构中。
+double findMedian() - 返回目前所有元素的中位数。
+
+**示例1：**
+
+~~~
+输入：
+["MedianFinder","addNum","addNum","findMedian","addNum","findMedian"]
+[[],[1],[2],[],[3],[]]
+输出：[null,null,null,1.50000,null,2.00000]
+~~~
+**示例2：**
+~~~
+输入：
+["MedianFinder","addNum","findMedian","addNum","findMedian"]
+[[],[2],[],[3],[]]
+输出：[null,null,2.00000,null,2.50000]
+~~~
+
+
+**限制：**
+
+最多会对 addNum、findMedia进行 50000 次调用。
+
+**解答1:**
+~~~cpp
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    std::vector<int> nums;
+    double median;
+    MedianFinder() {
+        std::vector<int> nums;
+        double median = 0;
+    }
+    
+    void addNum(int num) {
+        int len = nums.size();
+        if(len == 0) 
+        {
+            nums.push_back(num);
+            median = num;
+        }
+        else
+        {
+            for(int i = 0;i<len;i++)
+            {
+                if(num <= nums[i]) 
+                {
+                    nums.insert(nums.begin()+i,num);
+                    break;
+                }
+            }
+            if(len == nums.size()) nums.insert(nums.end(),num);
+            len++;
+            if(len%2 == 0) 
+                median = (nums[len/2 -1]+nums[len/2])/2.0;
+            else 
+                median = nums[(len+1)/2 -1];
+        }
+    }
+    
+    double findMedian() {
+        return median;
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
+~~~
+
 
 # <a name="42">42. 连续子数组的最大和</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -2620,6 +2788,36 @@ public:
                 pre = pre;
                 prepre = pre;
             }
+        }
+        return pre;
+    }
+};
+~~~
+
+**解答2:**
+~~~cpp
+class Solution {
+public:
+    int translateNum(int num) {
+        int prenum = num%10;
+        int prepre = 1;
+        int pre = 1;
+        while(num)
+        {
+            num /= 10;
+            int currnum = num % 10;
+            if(10*currnum+prenum < 26 && currnum != 0) 
+            {
+                int tmp = pre;
+                pre = prepre + pre;
+                prepre = tmp;
+            }
+            else
+            {
+                pre = pre;
+                prepre = pre;
+            }
+            prenum = currnum;
         }
         return pre;
     }
