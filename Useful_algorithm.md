@@ -56,3 +56,51 @@ int main()
     return 0;
 }
 ~~~
+
+# Pre,Mid,Post Tree
+~~~cpp
+    vector<vector<int> > threeOrders(TreeNode* root) {
+        vector<int> pre;
+        vector<int> mid;
+        vector<int> post;
+        //PRE
+        stack<TreeNode*> Spre;
+        Spre.push(root);
+        while(Spre.size())
+        {
+            TreeNode* top = Spre.top();
+            pre.push_back(top->val);
+            Spre.pop();
+            if(top->right) Spre.push(top->right);
+            if(top->left) Spre.push(top->left);
+        }
+        //MID
+        stack<TreeNode*> Smid;
+        TreeNode* curr = root;
+        while(curr||Smid.size())
+        {
+            while(curr)
+            {
+                Smid.push(curr);
+                curr = curr->left;
+            }
+            mid.push_back(Smid.top()->val);
+            curr = Smid.top()->right;
+            Smid.pop();
+        }
+        //POST
+        stack<TreeNode*> Spost;
+        Spost.push(root);
+        while(Spost.size())
+        {
+            TreeNode* top = Spost.top();
+            post.push_back(top->val);
+            Spost.pop();
+            if(top->left) Spost.push(top->left);
+            if(top->right) Spost.push(top->right);
+        }
+        std::reverse(post.begin(),post.end());
+        
+        return {pre,mid,post};
+    }
+~~~
